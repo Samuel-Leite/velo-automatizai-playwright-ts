@@ -12,9 +12,9 @@ test('Deve consultar um pedido aprovado', async ({ page }) => {
 
     // Act
     await page.getByTestId('search-order-id').fill('VLO-ZAREOS')
-    await page.getByTestId('search-order-button').click()
+    await page.getByRole('button', { name: 'Buscar Pedido' }).click()
 
     // Assert
-    await expect(page.getByTestId('order-result-id')).toContainText('VLO-ZAREOS')
-    await expect(page.getByTestId('order-result-status')).toContainText('APROVADO')
+    await expect( page.locator('div').filter({ hasText: 'Pedido' }).locator('p', { hasText: 'VLO-' }) ).toHaveText('VLO-ZAREOS');
+    await expect(page.getByText('APROVADO')).toBeVisible()
 });
