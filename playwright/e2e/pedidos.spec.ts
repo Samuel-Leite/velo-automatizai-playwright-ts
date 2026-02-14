@@ -4,6 +4,10 @@ import { test, expect } from '@playwright/test'
 // PAV - Preparar, Agir, Validar
 
 test('Deve consultar um pedido aprovado', async ({ page }) => {
+
+    // Test Data
+    const order = 'VLO-ZAREOS'
+
     // Arrange
     await page.goto('http://localhost:5173/')
     await expect(page.getByTestId('hero-section').getByRole('heading')).toContainText('Velô Sprint')
@@ -11,7 +15,7 @@ test('Deve consultar um pedido aprovado', async ({ page }) => {
     await expect(page.getByRole('heading')).toContainText('Consultar Pedido')
 
     // Act
-    await page.getByTestId('search-order-id').fill('VLO-ZAREOS')
+    await page.getByTestId('search-order-id').fill(order)
     await page.getByRole('button', { name: 'Buscar Pedido' }).click()
 
     // Assert
@@ -19,7 +23,7 @@ test('Deve consultar um pedido aprovado', async ({ page }) => {
 
     await expect(
       pedidoContainer.locator('p', { hasText: 'VLO-' })
-    ).toHaveText('VLO-ZAREOS');
+    ).toHaveText(order);
     
     await expect(
       pedidoContainer.getByText('APROVADO')
