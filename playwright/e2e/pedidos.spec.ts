@@ -15,6 +15,14 @@ test('Deve consultar um pedido aprovado', async ({ page }) => {
     await page.getByRole('button', { name: 'Buscar Pedido' }).click()
 
     // Assert
-    await expect( page.locator('div').filter({ hasText: 'Pedido' }).locator('p', { hasText: 'VLO-' }) ).toHaveText('VLO-ZAREOS');
-    await expect(page.getByText('APROVADO')).toBeVisible()
+    const pedidoContainer = page.locator('div').filter({ hasText: 'Pedido' });
+
+    await expect(
+      pedidoContainer.locator('p', { hasText: 'VLO-' })
+    ).toHaveText('VLO-ZAREOS');
+    
+    await expect(
+      pedidoContainer.getByText('APROVADO')
+    ).toBeVisible();
+    
 });
