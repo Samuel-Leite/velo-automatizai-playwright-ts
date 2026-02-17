@@ -1,32 +1,61 @@
 import { test, expect } from '@playwright/test'
+import { generateOrderCode } from '../support/helpers';
 
 // AAA - Arrange, Act, Assert
 // PAV - Preparar, Agir, Validar
 
-test('Deve consultar um pedido aprovado', async ({ page }) => {
+test.describe('Consulta de pedido', async () => {
 
-    // Test Data
-    const order = 'VLO-ZAREOS'
+    test.beforeEach(async ({ page }) => {
+        // Arrange
+        await page.goto('http://localhost:5173/')
+        await expect(page.getByTestId('hero-section').getByRole('heading')).toContainText('Velô Sprint')
 
-    // Arrange
-    await page.goto('http://localhost:5173/')
-    await expect(page.getByTestId('hero-section').getByRole('heading')).toContainText('Velô Sprint')
-    await page.getByRole('link', { name: 'Consultar Pedido' }).click()
-    await expect(page.getByRole('heading')).toContainText('Consultar Pedido')
+        await page.getByRole('link', { name: 'Consultar Pedido' }).click()
+        await expect(page.getByRole('heading')).toContainText('Consultar Pedido')
+    })
 
-    // Act
-    await page.getByTestId('search-order-id').fill(order)
-    await page.getByRole('button', { name: 'Buscar Pedido' }).click()
+    test.afterEach(async () => {
+        console.log('afterEach: roda depois de cada teste')
+    })
 
-    // Assert
-    const pedidoContainer = page.locator('div').filter({ hasText: 'Pedido' });
+    test.afterAll(async () => {
+        console.log('afterAll: roda uma vez depois de todos os testes')
+    })
 
-    await expect(
-      pedidoContainer.locator('p', { hasText: 'VLO-' })
-    ).toHaveText(order);
-    
-    await expect(
-      pedidoContainer.getByText('APROVADO')
-    ).toBeVisible();
-    
-});
+    test('Deve consultar um pedido aprovado', async ({ page }) => {
+
+        // Test Data
+        const order = 'VLO-ZAREOS'
+
+        // Act
+        await page.getByTestId('search-order-id').fill(order)
+        await page.getByRole('button', { name: 'Buscar Pedido' }).click()
+
+        // Assert
+        const pedidoContainer = page.locator('div').filter({ hasText: 'Pedido' });
+
+        await expect(
+            pedidoContainer.locator('p', { hasText: 'VLO-' })
+        ).toHaveText(order);
+
+        await expect(
+            pedidoContainer.getByText('APROVADO')
+        ).toBeVisible();
+
+    });
+
+    test('Deve exibir mensagem quando o pedido não é encontrado', async ({ page }) => {
+
+        const order = generateOrderCode()
+
+        await page.getByTestId('search-order-id').fill(order)
+        await page.getByRole('button', { name: 'Buscar Pedido' }).click()
+
+        await expect(page.locator('#root')).toMatchAriaSnapshot(`
+            - img
+            - heading "Pedido não encontrado" [level=3]
+            - paragraph: Verifique o número do pedido e tente novamente
+            `)
+    })
+})
