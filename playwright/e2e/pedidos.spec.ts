@@ -39,8 +39,9 @@ test.describe('Consulta de pedido', async () => {
             - img
             - paragraph: Pedido
             - paragraph: ${order.number}
-            - img
-            - text: ${order.status}
+            - status:
+                - img
+                - text: ${order.status}
             - img "Velô Sprint"
             - paragraph: Modelo
             - paragraph: Velô Sprint
@@ -63,6 +64,13 @@ test.describe('Consulta de pedido', async () => {
             - paragraph: ${order.payment}
             - paragraph: /R\\$ \\d+\\.\\d+,\\d+/
             `);
+            
+            const statusBadge = page.getByRole('status').filter({hasText: order.status})
+            await expect(statusBadge).toHaveClass(/bg-green-100/)
+            await expect(statusBadge).toHaveClass(/text-green-700/)
+
+            const statusIcon = statusBadge.locator('svg')
+            await expect(statusIcon).toHaveClass(/lucide-circle-check-big/)
     });
 
     test('Deve consultar um pedido reprovado', async ({ page }) => {
@@ -89,8 +97,9 @@ test.describe('Consulta de pedido', async () => {
             - img
             - paragraph: Pedido
             - paragraph: ${order.number}
-            - img
-            - text: ${order.status}
+            - status:
+                - img
+                - text: ${order.status}
             - img "Velô Sprint"
             - paragraph: Modelo
             - paragraph: Velô Sprint
@@ -113,6 +122,13 @@ test.describe('Consulta de pedido', async () => {
             - paragraph: ${order.payment}
             - paragraph: /R\\$ \\d+\\.\\d+,\\d+/
             `);
+
+            const statusBadge = page.getByRole('status').filter({hasText: order.status})
+            await expect(statusBadge).toHaveClass(/bg-red-100/)
+            await expect(statusBadge).toHaveClass(/text-red-700/)
+
+            const statusIcon = statusBadge.locator('svg')
+            await expect(statusIcon).toHaveClass(/lucide-circle-x/)
     });
 
     test('Deve consultar um pedido em analise', async ({ page }) => {
@@ -139,8 +155,9 @@ test.describe('Consulta de pedido', async () => {
             - img
             - paragraph: Pedido
             - paragraph: ${order.number}
-            - img
-            - text: ${order.status}
+            - status:
+                - img
+                - text: ${order.status}
             - img "Velô Sprint"
             - paragraph: Modelo
             - paragraph: Velô Sprint
@@ -163,6 +180,13 @@ test.describe('Consulta de pedido', async () => {
             - paragraph: ${order.payment}
             - paragraph: /R\\$ \\d+\\.\\d+,\\d+/
             `);
+
+            const statusBadge = page.getByRole('status').filter({hasText: order.status})
+            await expect(statusBadge).toHaveClass(/bg-amber-100/)
+            await expect(statusBadge).toHaveClass(/text-amber-700/)
+
+            const statusIcon = statusBadge.locator('svg')
+            await expect(statusIcon).toHaveClass(/lucide-clock-icon/)
     });
 
     test('Deve exibir mensagem quando o pedido não é encontrado', async ({ page }) => {
