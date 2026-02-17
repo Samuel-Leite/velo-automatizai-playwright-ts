@@ -33,16 +33,34 @@ test.describe('Consulta de pedido', async () => {
         await page.getByRole('button', { name: 'Buscar Pedido' }).click()
 
         // Assert
-        const pedidoContainer = page.locator('div').filter({ hasText: 'Pedido' });
-
-        await expect(
-            pedidoContainer.locator('p', { hasText: 'VLO-' })
-        ).toHaveText(order);
-
-        await expect(
-            pedidoContainer.getByText('APROVADO')
-        ).toBeVisible();
-
+        await expect(page.getByTestId(`order-result-${order}`)).toMatchAriaSnapshot(`
+            - img
+            - paragraph: Pedido
+            - paragraph: ${order}
+            - img
+            - text: APROVADO
+            - img "Velô Sprint"
+            - paragraph: Modelo
+            - paragraph: Velô Sprint
+            - paragraph: Cor
+            - paragraph: Midnight Black
+            - paragraph: Interior
+            - paragraph: cream
+            - paragraph: Rodas
+            - paragraph: sport Wheels
+            - heading "Dados do Cliente" [level=4]
+            - paragraph: Nome
+            - paragraph: Samuel Labs
+            - paragraph: Email
+            - paragraph: francisco-palheta@uorak.com
+            - paragraph: Loja de Retirada
+            - paragraph
+            - paragraph: Data do Pedido
+            - paragraph: /\\d+\\/\\d+\\/\\d+/
+            - heading "Pagamento" [level=4]
+            - paragraph: À Vista
+            - paragraph: /R\\$ \\d+\\.\\d+,\\d+/
+            `);
     });
 
     test('Deve exibir mensagem quando o pedido não é encontrado', async ({ page }) => {
