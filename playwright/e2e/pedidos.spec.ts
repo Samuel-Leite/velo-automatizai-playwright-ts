@@ -15,14 +15,6 @@ test.describe('Consulta de pedido', async () => {
         await expect(page.getByRole('heading')).toContainText('Consultar Pedido')
     })
 
-    test.afterEach(async () => {
-        console.log('afterEach: roda depois de cada teste')
-    })
-
-    test.afterAll(async () => {
-        console.log('afterAll: roda uma vez depois de todos os testes')
-    })
-
     test('Deve consultar um pedido aprovado', async ({ page }) => {
 
         // Test Data
