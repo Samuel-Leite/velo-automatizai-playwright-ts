@@ -26,39 +26,99 @@ test.describe('Consulta de pedido', async () => {
     test('Deve consultar um pedido aprovado', async ({ page }) => {
 
         // Test Data
-        const order = 'VLO-ZAREOS'
+        const order = {
+            number: 'VLO-ZAREOS',
+            status: 'APROVADO',
+            color: 'Midnight Black',
+            wheels: 'sport Wheels',
+            customer: {
+                name: 'Samuel Labs',
+                email: 'francisco-palheta@uorak.com'
+            },
+            payment: 'À Vista'
+        }
 
         // Act
-        await page.getByTestId('search-order-id').fill(order)
+        await page.getByTestId('search-order-id').fill(order.number)
         await page.getByRole('button', { name: 'Buscar Pedido' }).click()
 
         // Assert
-        await expect(page.getByTestId(`order-result-${order}`)).toMatchAriaSnapshot(`
+        await expect(page.getByTestId(`order-result-${order.number}`)).toMatchAriaSnapshot(`
             - img
             - paragraph: Pedido
-            - paragraph: ${order}
+            - paragraph: ${order.number}
             - img
-            - text: APROVADO
+            - text: ${order.status}
             - img "Velô Sprint"
             - paragraph: Modelo
             - paragraph: Velô Sprint
             - paragraph: Cor
-            - paragraph: Midnight Black
+            - paragraph:  ${order.color}
             - paragraph: Interior
             - paragraph: cream
             - paragraph: Rodas
-            - paragraph: sport Wheels
+            - paragraph: ${order.wheels}
             - heading "Dados do Cliente" [level=4]
             - paragraph: Nome
-            - paragraph: Samuel Labs
+            - paragraph: ${order.customer.name}
             - paragraph: Email
-            - paragraph: francisco-palheta@uorak.com
+            - paragraph: ${order.customer.email}
             - paragraph: Loja de Retirada
             - paragraph
             - paragraph: Data do Pedido
             - paragraph: /\\d+\\/\\d+\\/\\d+/
             - heading "Pagamento" [level=4]
-            - paragraph: À Vista
+            - paragraph: ${order.payment}
+            - paragraph: /R\\$ \\d+\\.\\d+,\\d+/
+            `);
+    });
+
+    test('Deve consultar um pedido reprovado', async ({ page }) => {
+
+        // Test Data
+        const order = {
+            number: 'VLO-9KVDS6',
+            status: 'REPROVADO',
+            color: 'Glacier Blue',
+            wheels: 'sport Wheels',
+            customer: {
+                name: 'Patinha McDuck',
+                email: 'patinhas@mcduck.com'
+            },
+            payment: 'À Vista'
+        }
+
+        // Act
+        await page.getByTestId('search-order-id').fill(order.number)
+        await page.getByRole('button', { name: 'Buscar Pedido' }).click()
+
+        // Assert
+        await expect(page.getByTestId(`order-result-${order.number}`)).toMatchAriaSnapshot(`
+            - img
+            - paragraph: Pedido
+            - paragraph: ${order.number}
+            - img
+            - text: ${order.status}
+            - img "Velô Sprint"
+            - paragraph: Modelo
+            - paragraph: Velô Sprint
+            - paragraph: Cor
+            - paragraph:  ${order.color}
+            - paragraph: Interior
+            - paragraph: cream
+            - paragraph: Rodas
+            - paragraph: ${order.wheels}
+            - heading "Dados do Cliente" [level=4]
+            - paragraph: Nome
+            - paragraph: ${order.customer.name}
+            - paragraph: Email
+            - paragraph: ${order.customer.email}
+            - paragraph: Loja de Retirada
+            - paragraph
+            - paragraph: Data do Pedido
+            - paragraph: /\\d+\\/\\d+\\/\\d+/
+            - heading "Pagamento" [level=4]
+            - paragraph: ${order.payment}
             - paragraph: /R\\$ \\d+\\.\\d+,\\d+/
             `);
     });
