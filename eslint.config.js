@@ -23,4 +23,12 @@ export default tseslint.config(
       "@typescript-eslint/no-unused-vars": "off",
     },
   },
+  {
+    files: ["playwright/**/*.{ts,tsx}"],
+    rules: {
+      "react-hooks/rules-of-hooks": "off",
+      "semi": ["error", "never"],
+      "@typescript-eslint/semi": ["error", "never"],
+    },
+  },
 );
