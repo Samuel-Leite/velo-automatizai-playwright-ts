@@ -1,14 +1,15 @@
 import { Page, expect } from '@playwright/test'
 
-type OrderStatus = 'APROVADO' | 'REPROVADO' | 'EM_ANALISE'
+export type OrderStatus = 'APROVADO' | 'REPROVADO' | 'EM_ANALISE'
 
 export type OrderDetails = {
     number: string
     status: OrderStatus
     color: string
     wheels: string
-    customer: { name: string, email: string }
+    customer: { name: string; email: string; document: string; phone: string }
     payment: string
+    total_price: string
 }
 
 export function createOrderLockupActions(page: Page) {
@@ -75,18 +76,18 @@ export function createOrderLockupActions(page: Page) {
                 APROVADO: {
                     background: 'bg-green-100',
                     text: 'text-green-700',
-                    icon: 'lucide-circle-check-big'
+                    icon: 'lucide-circle-check-big',
                 },
                 REPROVADO: {
                     background: 'bg-red-100',
                     text: 'text-red-700',
-                    icon: 'lucide-circle-x'
+                    icon: 'lucide-circle-x',
                 },
                 EM_ANALISE: {
                     background: 'bg-amber-100',
                     text: 'text-amber-700',
-                    icon: 'lucide-clock'
-                }
+                    icon: 'lucide-clock',
+                },
             } as const
 
             const classes = statusClasses[status]
