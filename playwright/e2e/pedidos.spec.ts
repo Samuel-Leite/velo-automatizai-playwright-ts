@@ -11,7 +11,7 @@ test.describe('Consulta de Pedido', () => {
     await app.orderLookup.open()
   })
 
-  test('deve consultar um pedido aprovado', async ({ app }) => {
+  test('Deve consultar um pedido aprovado', async ({ app }) => {
     const order: OrderDetails = testData.aprovado as OrderDetails
 
     await deleteOrderByNumber(order.number)
@@ -22,7 +22,7 @@ test.describe('Consulta de Pedido', () => {
     await app.orderLookup.validateStatusBadge(order.status)
   })
 
-  test('deve consultar um pedido reprovado', async ({ app }) => {
+  test('Deve consultar um pedido reprovado', async ({ app }) => {
     const order: OrderDetails = testData.reprovado as OrderDetails
 
     await deleteOrderByNumber(order.number)
@@ -33,7 +33,7 @@ test.describe('Consulta de Pedido', () => {
     await app.orderLookup.validateStatusBadge(order.status)
   })
 
-  test('deve consultar um pedido em analise', async ({ app }) => {
+  test('Deve consultar um pedido em analise', async ({ app }) => {
     const order: OrderDetails = testData.em_analise as OrderDetails
 
     await deleteOrderByNumber(order.number)
@@ -44,19 +44,19 @@ test.describe('Consulta de Pedido', () => {
     await app.orderLookup.validateStatusBadge(order.status)
   })
 
-  test('deve exibir mensagem quando o pedido não é encontrado', async ({ app }) => {
+  test('Deve exibir mensagem quando o pedido não é encontrado', async ({ app }) => {
     const order = generateOrderCode()
     await app.orderLookup.searchOrder(order)
     await app.orderLookup.validateOrderNotFound()
   })
 
-  test('deve exibir mensagem quando o código do pedido está fora do padrão', async ({ app }) => {
+  test('Deve exibir mensagem quando o código do pedido está fora do padrão', async ({ app }) => {
     const orderCode = 'XYZ-999-INVALIDO'
     await app.orderLookup.searchOrder(orderCode)
     await app.orderLookup.validateOrderNotFound()
   })
 
-  test('deve manter o botão de busca desabilitado com campo vazio ou apenas espaços', async ({ app, page }) => {
+  test('Deve manter o botão de busca desabilitado com campo vazio ou apenas espaços', async ({ app, page }) => {
     const button = app.orderLookup.elements.searchButton
     await expect(button).toBeDisabled()
 
