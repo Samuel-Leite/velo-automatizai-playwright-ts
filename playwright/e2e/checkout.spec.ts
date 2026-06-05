@@ -1,4 +1,5 @@
 import { test, expect } from '../support/fixtures'
+import { deleteOrderByDocument } from '../support/database/orderRepository'
 
 test.describe('Checkout', () => {
 
@@ -100,12 +101,14 @@ test.describe('Checkout', () => {
                 name: 'Samuel',
                 lastname: 'Leite',
                 email: 'samuel@gmail.com',
-                document: '65176522802',
+                document: '651.765.228-02',
                 phone: '(11) 99999-9999',
                 store: 'Velô Paulista',
                 paymentMethod: 'À Vista',
                 totalPrice: 'R$ 40.000,00'
             }
+
+            await deleteOrderByDocument(customer.document);
 
             await page.goto('/')
             await page.getByRole('link', { name: /Configure Agora/i }).click()
