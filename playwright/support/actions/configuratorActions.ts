@@ -47,5 +47,9 @@ export function createConfiguratorActions(page: Page) {
             await expect(summaryTotal).toBeVisible()
             await expect(summaryTotal).toHaveText(price)
         },
+
+        async finishConfigurator() {
+            await page.getByRole('button', { name: 'Monte o Seu' }).click()
+        },
     }
 }
