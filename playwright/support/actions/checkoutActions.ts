@@ -1,5 +1,17 @@
 import { Page, expect } from '@playwright/test'
 
+export interface CustomerData {
+    name: string
+    lastname: string
+    email: string
+    phone: string
+    document: string
+    store?: string
+    paymentMethod?: string
+    downPayment?: string
+    totalPrice?: string
+}
+
 export function createCheckoutActions(page: Page) {
 
     const terms = page.getByTestId('checkout-terms')
@@ -14,8 +26,7 @@ export function createCheckoutActions(page: Page) {
         terms: page.getByTestId('error-terms')
     }
 
-
-    return {
+    const actions = {
 
         elements: {
             terms,
@@ -30,13 +41,7 @@ export function createCheckoutActions(page: Page) {
             await expect(page.getByTestId('summary-total-price')).toHaveText(price)
         },
 
-        async fillCustomerlData(data: {
-            name: string
-            lastname: string
-            email: string
-            phone: string
-            document: string
-        }) {
+        async fillCustomerlData(data: CustomerData) {
             await page.getByTestId('checkout-name').fill(data.name)
             await page.getByTestId('checkout-lastname').fill(data.lastname)
             await page.getByTestId('checkout-email').fill(data.email)
@@ -64,5 +69,31 @@ export function createCheckoutActions(page: Page) {
         async submit() {
             await page.getByRole('button', { name: 'Confirmar Pedido' }).click()
         },
+
+
+        async processCheckout(customer: CustomerData) {
+            await actions.fillCustomerlData(customer)
+            
+            if (customer.store) {
+                await actions.selectStore(customer.store)
+            }
+
+            if (customer.paymentMethod) {
+                await actions.selectPaymentMethod(customer.paymentMethod)
+            }
+
+            if (customer.downPayment) {
+                await actions.fillDownPayment(customer.downPayment)
+            }
+
+            if (customer.paymentMethod === 'À Vista' && customer.totalPrice) {
+                await actions.expectSummaryTotal(customer.totalPrice)
+            }
+
+            await actions.acceptTerms()
+            await actions.submit()
+        }
     }
+
+    return actions
 }
