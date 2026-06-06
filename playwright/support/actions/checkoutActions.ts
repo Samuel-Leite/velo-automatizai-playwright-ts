@@ -1,17 +1,5 @@
 import { Page, expect } from '@playwright/test'
 
-export interface CustomerData {
-    name: string
-    lastname: string
-    email: string
-    phone: string
-    document: string
-    store?: string
-    paymentMethod?: string
-    downPayment?: string
-    totalPrice?: string
-}
-
 export function createCheckoutActions(page: Page) {
 
     const terms = page.getByTestId('checkout-terms')
@@ -26,7 +14,8 @@ export function createCheckoutActions(page: Page) {
         terms: page.getByTestId('error-terms')
     }
 
-    const actions = {
+
+    return {
 
         elements: {
             terms,
@@ -41,7 +30,13 @@ export function createCheckoutActions(page: Page) {
             await expect(page.getByTestId('summary-total-price')).toHaveText(price)
         },
 
-        async fillCustomerlData(data: CustomerData) {
+        async fillCustomerlData(data: {
+            name: string
+            lastname: string
+            email: string
+            phone: string
+            document: string
+        }) {
             await page.getByTestId('checkout-name').fill(data.name)
             await page.getByTestId('checkout-lastname').fill(data.lastname)
             await page.getByTestId('checkout-email').fill(data.email)
@@ -70,30 +65,10 @@ export function createCheckoutActions(page: Page) {
             await page.getByRole('button', { name: 'Confirmar Pedido' }).click()
         },
 
-
-        async processCheckout(customer: CustomerData) {
-            await actions.fillCustomerlData(customer)
-            
-            if (customer.store) {
-                await actions.selectStore(customer.store)
-            }
-
-            if (customer.paymentMethod) {
-                await actions.selectPaymentMethod(customer.paymentMethod)
-            }
-
-            if (customer.downPayment) {
-                await actions.fillDownPayment(customer.downPayment)
-            }
-
-            if (customer.paymentMethod === 'À Vista' && customer.totalPrice) {
-                await actions.expectSummaryTotal(customer.totalPrice)
-            }
-
-            await actions.acceptTerms()
-            await actions.submit()
+        async expectResult(status: string) {
+            await expect(page).toHaveURL(/\/success/)
+            await expect(page.getByRole('heading', { name: status })).toBeVisible()
         }
-    }
 
-    return actions
+    }
 }
