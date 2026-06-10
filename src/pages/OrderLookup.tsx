@@ -85,9 +85,10 @@ const OrderLookup = () => {
               <div>
                 <Label htmlFor="order-id">Número do Pedido</Label>
                 <Input
-                  type="text"
                   id="order-id"
-                  placeholder="Ex: VLO-ABCD10"
+                  data-testid="search-order-id"
+                  type="text"
+                  placeholder="Ex: VLO-ABC123"
                   value={orderId}
                   onChange={(e) => setOrderId(e.target.value)}
                   className="mt-1"
@@ -95,6 +96,7 @@ const OrderLookup = () => {
               </div>
               <Button
                 type="submit"
+                data-testid="search-order-button"
                 className="w-full"
                 disabled={!orderId.trim() || isLoading}
               >
@@ -145,19 +147,22 @@ const OrderLookup = () => {
                 </div>
                 <div
                   role="status"
+                  data-testid="order-result-status"
                   className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium ${searchedOrder.status === 'APROVADO'
-                    ? 'bg-green-100 text-green-700'
-                    : searchedOrder.status === 'REPROVADO'
-                      ? 'bg-red-100 text-red-700'
-                      : 'bg-amber-100 text-amber-700'
+                      ? 'bg-green-100 text-green-700'
+                      : searchedOrder.status === 'REPROVADO'
+                        ? 'bg-red-100 text-red-700'
+                        : 'bg-amber-100 text-amber-700'
                     }`}
                 >
-                  {searchedOrder.status === 'APROVADO' ? (
-                    <CheckCircle className="w-4 h-4" />
-                  ) : searchedOrder.status === 'REPROVADO' ? (
-                    <XCircle className="w-4 h-4" />
-                  ) : (
-                    <Clock className="w-4 h-4" />
+                  {searchedOrder.status === 'APROVADO' && (
+                    <CheckCircle className="w-4 h-4 lucide-circle-check-big" />
+                  )}
+                  {searchedOrder.status === 'REPROVADO' && (
+                    <XCircle className="w-4 h-4 lucide-circle-x" />
+                  )}
+                  {searchedOrder.status === 'EM_ANALISE' && (
+                    <Clock className="w-4 h-4 lucide-clock-icon" />
                   )}
                   {searchedOrder.status}
                 </div>
