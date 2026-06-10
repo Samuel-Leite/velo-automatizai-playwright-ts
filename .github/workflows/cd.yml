@@ -9,6 +9,7 @@ on:
       - main
 
 env:
+  # Versão do Node utilizada em todo o workflow
   NODE_VERSION: '24'
   VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
   VERCEL_SCOPE: samuel-leite1
@@ -22,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Realiza o checkout do código do repositório
+      # 1. Faz checkout do código do repositório
       - name: Checkout repository
         uses: actions/checkout@v6.0.3
 
@@ -52,7 +53,7 @@ jobs:
       deployment-url: ${{ steps.deploy.outputs.deployment-url }}
 
     steps:
-      # 1. Faz o checkout do código do repositório
+      # 1. Faz checkout do código do repositório
       - name: Checkout repository
         uses: actions/checkout@v6.0.3
 
@@ -91,16 +92,11 @@ jobs:
           echo "KEY length:"
           grep VITE_SUPABASE_PUBLISHABLE_KEY .vercel/.env.preview.local | wc -c
       
-          - name: Show Preview Variables
-        run: |
-          echo "=== ENV FILE ==="
-          grep "VITE_SUPABASE" .vercel/.env.preview.local    
-          
       # 6. Build para o Vercel
       - name: Build Vercel Preview
         run: yarn vercel build --token=$VERCEL_TOKEN
 
-      # 7. Deploy Preview no Vercel
+      # 7. Deploy preview no vercel
       - name: Deploy Preview
         id: deploy
         run: |
