@@ -70,8 +70,8 @@ jobs:
       # 4. Instala as dependências do projeto
       - name: Install dependencies
         run: yarn install
-
-      # 5. Obter as configurações do vercel
+      
+      # 5. Obter as conficurações do Vercel
       - name: Pull Vercel Config
         run: |
           yarn vercel pull --yes \
@@ -81,17 +81,19 @@ jobs:
 
       - name: Verify Preview Variables
         run: |
+          echo "=== Preview Variables ==="
+      
           echo "URL length:"
-          grep VITE_SUPABASE_URL .env.preview.local | wc -c
+          grep VITE_SUPABASE_URL .vercel/.env.preview.local | wc -c
       
           echo "PROJECT length:"
-          grep VITE_SUPABASE_PROJECT_ID .env.preview.local | wc -c
+          grep VITE_SUPABASE_PROJECT_ID .vercel/.env.preview.local | wc -c
       
           echo "KEY length:"
-          grep VITE_SUPABASE_PUBLISHABLE_KEY .env.preview.local | wc -c
+          grep VITE_SUPABASE_PUBLISHABLE_KEY .vercel/.env.preview.local | wc -c
       
       # 6. Build para o Vercel
-      - name: Build Vercel
+      - name: Build Vercel Preview
         run: yarn vercel build --token=$VERCEL_TOKEN
 
       # 7. Deploy preview no vercel
@@ -110,7 +112,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Faz checkout do código do repositório
+      # 1. Faz o checkout do código do repositório
       - name: Checkout repository
         uses: actions/checkout@v6.0.3
 
