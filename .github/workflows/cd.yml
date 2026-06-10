@@ -9,7 +9,6 @@ on:
       - main
 
 env:
-  # Versão do Node utilizada em todo o workflow
   NODE_VERSION: '24'
   VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
   VERCEL_SCOPE: samuel-leite1
