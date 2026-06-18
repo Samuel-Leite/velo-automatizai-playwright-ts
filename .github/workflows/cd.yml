@@ -141,7 +141,28 @@ jobs:
         timeout-minutes: 10
         run: yarn exec playwright install chromium
 
-      # 6. Execução dos Testes de Regressão
+      # 6. Verificar URL do deploy
+      - name: Verify Deployment URL
+        env:
+          BASE_URL: ${{ needs.build-and-deploy-preview.outputs.deployment-url }}
+        run: |
+          echo "BASE_URL=$BASE_URL"
+          if [ -z "$BASE_URL" ]; then
+            echo "::error::BASE_URL is empty! Deploy may have failed to capture the URL."
+            exit 1
+          fi
+          echo "Waiting for deployment to be ready..."
+          for i in $(seq 1 30); do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$BASE_URL" || true)
+            echo "  Attempt $i: HTTP $STATUS"
+            if [ "$STATUS" = "200" ]; then
+              echo "Deployment is ready!"
+              break
+            fi
+            sleep 5
+          done
+
+      # 7. Execução dos Testes de Regressão
       - name: Run E2E Regression Tests
         run: yarn playwright test
         env:
