@@ -77,7 +77,11 @@ jobs:
           --environment=preview \
           --token=$VERCEL_TOKEN \
           --scope=$VERCEL_SCOPE
-      
+
+      - name: Load Vercel env
+        run: |
+          export $(cat .vercel/.env.preview.local | xargs)
+
       # 6. Build para o Vercel
       - name: Build Vercel Preview
         run: yarn vercel build --token=$VERCEL_TOKEN
