@@ -74,7 +74,7 @@ jobs:
       
       # 6. Build para o Vercel
       - name: Build Vercel
-        run: yarn vercel build --token=$VERCEL_TOKEN
+        run: yarn vercel build --token=$VERCEL_TOKEN --scope=$VERCEL_SCOPE
 
       # 7. Deploy preview no vercel
       - name: Deploy preview
