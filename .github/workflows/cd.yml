@@ -50,6 +50,8 @@ jobs:
     name: Build & Deploy Vercel Preview
     needs: [unit-tests]
     runs-on: ubuntu-latest
+    outputs:
+      deployment-url: ${{ steps.deploy.outputs.deployment-url }}
 
     steps:
       # 1. Faz checkout do código do repositório
