@@ -34,9 +34,9 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      # 3. Habilita o Corepack para gerenciamento do Yarn
-      - name: Enable Corepack
-        run: corepack enable
+      # 3. Instala o Yarn globalmente
+      - name: Install Yarn
+        run: npm install -g yarn
 
       # 4. Instala as dependências do projeto
       - name: Install dependencies
@@ -64,9 +64,9 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      # 3. Habilita o Corepack para gerenciamento do Yarn
-      - name: Enable Corepack
-        run: corepack enable
+      # 3. Instala o Yarn globalmente
+      - name: Install Yarn
+        run: npm install -g yarn
 
       # 4. Instala as dependências do projeto
       - name: Install dependencies
@@ -113,9 +113,9 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      # 3. Habilita o Corepack para gerenciamento do Yarn
-      - name: Enable Corepack
-        run: corepack enable
+      # 3. Instala o Yarn globalmente
+      - name: Install Yarn
+        run: npm install -g yarn
 
       # 4. Instala as dependências do projeto
       - name: Install dependencies
@@ -161,9 +161,9 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      # 3. Habilita o Corepack para gerenciamento do Yarn
-      - name: Enable Corepack
-        run: corepack enable
+      # 3. Instala o Yarn globalmente
+      - name: Install Yarn
+        run: npm install -g yarn
 
       # 4. Instala as dependências do projeto
       - name: Install dependencies
